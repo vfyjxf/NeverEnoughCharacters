@@ -1,0 +1,28 @@
+# eclipse
+eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+run
+
+# CurseForge configuration
+/curseforge.properties
+
+# Changelog backup
+/changelog.bak

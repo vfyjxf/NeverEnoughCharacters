@@ -1,0 +1,130 @@
+import org.gradle.plugins.ide.eclipse.model.internal.FileReferenceFactory
+
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
+buildscript {
+	repositories {
+		maven { url = 'https://maven.minecraftforge.net/' }
+		maven { url = 'https://plugins.gradle.org/m2' }
+		mavenCentral()
+	}
+	dependencies {
+		classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {changing = true}
+	}
+}
+
+apply plugin: 'forge'
+
+version = mod_version
+group = "dev.vfyjxf.nech"
+archivesBaseName = "NeverEnoughCharacters"
+compileJava.options.encoding = 'UTF-8'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+minecraft {
+	version = "1.7.10-10.13.4.1614-1.7.10"
+	runDir = "run"
+}
+
+// A little hack to fix codechicken's crazy maven structure (at least in 1.7.10)
+eclipse.classpath.file.whenMerged { cp ->
+	// Find all codechicken source jars
+	def srcent = cp.entries.findAll { entry -> entry.path.contains("codechicken") && entry.path.endsWith("-src.jar") }
+	
+	// Remove them from classpath
+	cp.entries.removeAll srcent
+
+	// Map the source entries to their dev counterparts based on basename
+	Map<String, File> srcmap = new HashMap<String, File>()
+	srcent.forEach { entry ->
+		def file = new File(entry.path)
+		srcmap.put(file.getName().replace("-src.jar", "-dev.jar"), file)
+	}
+	
+	// Create file reference factory
+	def fileref = new FileReferenceFactory()
+	
+	// Find all codechicken development jars
+	cp.entries.findAll { entry -> entry.path.contains("codechicken") && entry.path.endsWith("-dev.jar") }.forEach { entry ->
+		File srcmapping = new File(entry.path) // Initialize the srcmapping from the dev jar path
+		srcmapping = srcmap.get(srcmapping.getName()) // Transform it using the sourcemap
+		entry.sourcePath = fileref.fromFile(srcmapping) // Set the source path
+	}
+}
+
+repositories {
+	maven {
+		name = 'ModMaven'
+		url = 'https://modmaven.dev'
+	}
+	flatDir {
+		dirs 'libs'
+	}
+}
+
+configurations {
+	// configuration that holds jars to include in the jar
+	shade
+	compile.extendsFrom shade
+}
+
+dependencies {
+	implementation 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:dev'
+	compileOnly 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:src'
+	
+	implementation 'codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev'
+	compileOnly 'codechicken:CodeChickenLib:1.7.10-1.1.3.140:src'
+	
+	implementation 'codechicken:NotEnoughItems:1.7.10-1.0.3.74:dev'
+	compileOnly 'codechicken:NotEnoughItems:1.7.10-1.0.3.74:src'
+
+	shade files("libs/PinIn-1.6.0-all.jar")
+}
+
+processResources {
+	// this will ensure that this task is redone when the versions change.
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
+
+	// replace stuff in mcmod.info, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
+		
+		// replace version and mcversion
+		filesMatching('mcmod.info') {
+			// replace version, mcversion and credits
+			expand([
+					version: mod_version,
+			])
+		}
+	}
+		
+	// copy everything else, thats not the mcmod.info
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+	}
+}
+
+jar {
+
+	configurations.shade.each { dep ->
+		from(project.zipTree(dep)) {
+			include 'me/towdium/pinin/**'
+		}
+	}
+
+    manifest {
+        attributes 'FMLCorePlugin': 'dev.vfyjxf.nech.core.NechCorePlugin',
+            'FMLCorePluginContainsFMLMod': 'true',
+            'ForceLoadAsMod': 'true'
+    }
+}
+
+task version {
+	doFirst {
+		println project.version
+	}
+}
