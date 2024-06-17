@@ -37,13 +37,13 @@ public class TransformerRegExp extends Transformer.Configurable {
     protected void transform(MethodNode n) {
         Transformer.transformInvoke(
                 n, "java/util/regex/Pattern", "matcher",
-                "net/vfyjxf/nechar/utils/Match", "matcher",
+                "dev/vfyjxf/nech/utils/Match", "matcher",
                 "(Ljava/util/regex/Pattern;Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;",
                 false, Opcodes.INVOKESTATIC, null, null
         );
         Transformer.transformInvoke(
                 n, "java/lang/String", "matches",
-                "net/vfyjxf/nechar/utils/Match", "matches",
+                "dev/vfyjxf/nech/utils/Match", "matches",
                 "(Ljava/lang/String;Ljava/lang/CharSequence;)Z",
                 false, Opcodes.INVOKESTATIC, "(Ljava/lang/Object;)Z", "(Ljava/lang/String;)Z"
         );

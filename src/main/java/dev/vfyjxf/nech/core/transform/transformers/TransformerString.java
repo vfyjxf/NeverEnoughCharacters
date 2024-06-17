@@ -36,7 +36,7 @@ public class TransformerString extends Transformer.Configurable {
     protected void transform(MethodNode n) {
         Transformer.transformInvoke(
                 n, "java/lang/String", "contains",
-                "net/vfyjxf/nechar/utils/Match", "contains",
+                "dev/vfyjxf/nech/utils/Match", "contains",
                 "(Ljava/lang/String;Ljava/lang/CharSequence;)Z",
                 false, Opcodes.INVOKESTATIC, "(Ljava/lang/Object;)Z", "(Ljava/lang/String;)Z"
         );
