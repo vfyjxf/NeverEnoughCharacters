@@ -6,8 +6,8 @@
 package dev.vfyjxf.nech.core.transform;
 
 import com.google.common.collect.HashMultimap;
-import net.moecraft.nechar.NotEnoughCharacters;
-import net.vfyjxf.nechar.NechConfig;
+import dev.vfyjxf.nech.NechConfig;
+import dev.vfyjxf.nech.core.NechCorePlugin;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Handle;
@@ -33,7 +33,7 @@ public interface Transformer {
         Optional<MethodNode> ret = c.methods.stream().filter(methodNode -> methodNode.name.equals(name))
                 .findFirst();
         String s = ret.isPresent() ? "," : ", not";
-        NotEnoughCharacters.logger.info("Finding method " + name + " in class " + c.name + s + " found.");
+        NechCorePlugin.LOGGER.info("Finding method " + name + " in class " + c.name + s + " found.");
         return ret;
     }
 
@@ -41,14 +41,14 @@ public interface Transformer {
         Optional<MethodNode> ret = c.methods.stream().filter(methodNode -> methodNode.name.equals(name))
                 .filter(methodNode -> methodNode.desc.equals(desc)).findFirst();
         String s = ret.isPresent() ? "," : ", not";
-        NotEnoughCharacters.logger.info("Finding method " + name + desc + " in class " + c.name + s + " found.");
+        NechCorePlugin.LOGGER.info("Finding method " + name + desc + " in class " + c.name + s + " found.");
         return ret;
     }
 
     static boolean transformInvoke(
             MethodNode methodNode, String owner, String name, String newOwner, String newName,
             String id, boolean isInterface, int op, @Nullable String arg1, @Nullable String arg2) {
-        NotEnoughCharacters.logger.info("Transforming invoke of " + owner + "." + name +
+        NechCorePlugin.LOGGER.info("Transforming invoke of " + owner + "." + name +
                 " to " + newOwner + "." + newName + " in method " + methodNode.name + ".");
 
         Iterator<AbstractInsnNode> iterator = methodNode.instructions.iterator();
@@ -83,7 +83,7 @@ public interface Transformer {
     }
 
     static void transformConstruct(MethodNode methodNode, String desc, String destNew) {
-        NotEnoughCharacters.logger.info("Transforming constructor of " + desc +
+        NechCorePlugin.LOGGER.info("Transforming constructor of " + desc +
                 " to " + destNew + " in method " + methodNode.name + ".");
         Iterator<AbstractInsnNode> i = methodNode.instructions.iterator();
         int cnt = 0;
@@ -104,7 +104,7 @@ public interface Transformer {
                 }
             }
         }
-        NotEnoughCharacters.logger.info("Transformed " + cnt + " occurrences.");
+        NechCorePlugin.LOGGER.info("Transformed " + cnt + " occurrences.");
     }
 
     static void transformHook(MethodNode methodNode, String owner, String name, String id) {
@@ -150,10 +150,10 @@ public interface Transformer {
 
         @Override
         protected void transform(ClassNode c) {
-            NotEnoughCharacters.logger.info("Transforming class " + c.name + " for " + getName() + ".");
+            NechCorePlugin.LOGGER.info("Transforming class " + c.name + " for " + getName() + ".");
             Set<String> ms = md.getMethodsForClass(c.name.replace('/', '.'));
             if (!ms.isEmpty()) c.methods.stream().filter(m -> ms.contains(m.name)).forEach(this::transform);
-            else NotEnoughCharacters.logger.info("No function matched in class " + c.name);
+            else NechCorePlugin.LOGGER.info("No function matched in class " + c.name);
         }
 
         @Override
@@ -174,7 +174,7 @@ public interface Transformer {
         HashMultimap<String, String> methods = HashMultimap.create();
 
         public static void logError(String s) {
-            NotEnoughCharacters.logger.info("Invalid config syntax: " + s);
+            NechCorePlugin.LOGGER.info("Invalid config syntax: " + s);
         }
 
         public void addAll(String[] names) {

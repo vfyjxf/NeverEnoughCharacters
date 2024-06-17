@@ -1,12 +1,12 @@
 package dev.vfyjxf.nech;
 
 import com.google.gson.GsonBuilder;
+import dev.vfyjxf.nech.utils.Profiler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
-import net.vfyjxf.nechar.utils.Profiler;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
