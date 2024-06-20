@@ -10,13 +10,13 @@ import java.io.File;
 public class NechConfig {
 
     public static boolean enableVerbose = false;
-    public static boolean EnableFZh2Z = false;
-    public static boolean EnableFSh2S = false;
-    public static boolean EnableFCh2C = false;
-    public static boolean EnableFAng2An = false;
-    public static boolean EnableFIng2In = false;
-    public static boolean EnableFEng2En = false;
-    public static boolean EnableFU2V = false;
+    public static boolean EnableFZh2Z = true;
+    public static boolean EnableFSh2S = true;
+    public static boolean EnableFCh2C = true;
+    public static boolean EnableFAng2An = true;
+    public static boolean EnableFIng2In = true;
+    public static boolean EnableFEng2En = true;
+    public static boolean EnableFU2V = true;
     public static Spell KeyboardType = Spell.QUANPIN;
     public static String[] transformerRegExpAdditionalList = new String[0];
     public static String[] transformerStringAdditionalList = new String[0];
@@ -79,13 +79,13 @@ public class NechConfig {
                         "The format is \"full.class.path$InnerClass:methodName\"").getStringList();
 
         //Fuzzy config
-        EnableFU2V = config.get("fuzzy", "EnableFU2V", false, "Set to true to enable fuzzy U <=> V").getBoolean();
-        EnableFZh2Z = config.get("fuzzy", "EnableFZh2Z", false, "Set to true to enable fuzzy Zh <=> Z").getBoolean();
-        EnableFSh2S = config.get("fuzzy", "EnableFSh2S", false, "Set to true to enable fuzzy Sh <=> S").getBoolean();
-        EnableFCh2C = config.get("fuzzy", "EnableFCh2C", false, "Set to true to enable fuzzy Ch <=> C").getBoolean();
-        EnableFAng2An = config.get("fuzzy", "EnableFAng2An", false, "Set to true to enable fuzzy Ang <=> An").getBoolean();
-        EnableFIng2In = config.get("fuzzy", "EnableFIng2In", false, "Set to true to enable fuzzy Ing <=> In").getBoolean();
-        EnableFEng2En = config.get("fuzzy", "EnableFEng2En", false, "Set to true to enable fuzzy Eng <=> En").getBoolean();
+        EnableFU2V = config.get("fuzzy", "EnableFU2V", true, "Set to true to enable fuzzy U <=> V").getBoolean();
+        EnableFZh2Z = config.get("fuzzy", "EnableFZh2Z", true, "Set to true to enable fuzzy Zh <=> Z").getBoolean();
+        EnableFSh2S = config.get("fuzzy", "EnableFSh2S", true, "Set to true to enable fuzzy Sh <=> S").getBoolean();
+        EnableFCh2C = config.get("fuzzy", "EnableFCh2C", true, "Set to true to enable fuzzy Ch <=> C").getBoolean();
+        EnableFAng2An = config.get("fuzzy", "EnableFAng2An", true, "Set to true to enable fuzzy Ang <=> An").getBoolean();
+        EnableFIng2In = config.get("fuzzy", "EnableFIng2In", true, "Set to true to enable fuzzy Ing <=> In").getBoolean();
+        EnableFEng2En = config.get("fuzzy", "EnableFEng2En", true, "Set to true to enable fuzzy Eng <=> En").getBoolean();
 
         // keyboard type config
         String keyboardTypeString = config.get("general", "KeyboardType", "quanpin", "Set the type of the keyboard, acceptable options are: quanpin, daqian, xiaohe and ziranma.").getString();
