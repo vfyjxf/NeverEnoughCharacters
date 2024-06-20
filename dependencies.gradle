@@ -36,7 +36,7 @@
 dependencies {
     api('com.github.GTNewHorizons:CodeChickenLib:1.2.1:dev')
     api('com.github.GTNewHorizons:CodeChickenCore:1.2.1:dev')
-    api("com.github.GTNewHorizons:NotEnoughItems:2.6.1-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.6.9-GTNH-pre:dev")
     shadowImplementation files("libs/PinIn-1.6.0-all.jar")
 
     annotationProcessor("com.google.auto.service:auto-service:1.1.1")

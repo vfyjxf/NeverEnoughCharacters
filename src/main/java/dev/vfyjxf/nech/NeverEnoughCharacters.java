@@ -15,6 +15,9 @@ import java.io.File;
 public class NeverEnoughCharacters {
     public static final Logger LOGGER = LogManager.getLogger("Never Enough Characters");
 
+    public NeverEnoughCharacters() {
+    }
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         NechConfig.loadConfig(new File(Minecraft.getMinecraft().mcDataDir, "config/NotEnoughCharacters.cfg"));

@@ -1,6 +1,5 @@
 package dev.vfyjxf.nech.integration.nei;
 
-import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 
 /**
@@ -10,7 +9,7 @@ import codechicken.nei.api.IConfigureNEI;
 public class NEIConfig implements IConfigureNEI {
     @Override
     public void loadConfig() {
-        API.addSearchProvider(new JeiLikeSearchProvider());
+
     }
 
     @Override
